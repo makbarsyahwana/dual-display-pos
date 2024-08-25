@@ -1,29 +1,25 @@
 import { useEffect, useState } from 'react';
 
 const useIsExtendedMonitor = (): boolean => {
-  const [isExtended, setIsExtended] = useState<boolean>(false);
+    const [isExtendedMonitor, setIsExtendedMonitor] = useState(false);
 
   const detectExtendedMonitor = () => {
-    const { screenLeft, screenTop, screen } = window;
-    if (screenLeft !== 0 || screenTop !== 0) {
-      setIsExtended(true);
-    } else if (screen.availWidth !== screen.width || screen.availHeight !== screen.height) {
-      setIsExtended(true);
-    } else {
-      setIsExtended(false);
-    }
+    const isPositionedAwayFromPrimary = window.screenLeft !== 0 || window.screenTop !== 0;
+    // const isBeyondPrimaryScreen = window.screenLeft > window.screen.width || window.screenTop > window.screen.height;
+
+    setIsExtendedMonitor(isPositionedAwayFromPrimary);
   };
 
   useEffect(() => {
     detectExtendedMonitor();
-    window.addEventListener('resize', detectExtendedMonitor);
+    window.addEventListener('move', detectExtendedMonitor);
 
     return () => {
-      window.removeEventListener('resize', detectExtendedMonitor);
+      window.addEventListener('move', detectExtendedMonitor);
     };
   }, []);
 
-  return isExtended;
+  return isExtendedMonitor;
 };
 
 export default useIsExtendedMonitor;
