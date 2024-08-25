@@ -5,7 +5,7 @@ const useIsExtendedMonitor = (): boolean => {
 
   const detectExtendedMonitor = () => {
     const isPositionedAwayFromPrimary = window.screenLeft !== 0 || window.screenTop !== 0;
-    // const isBeyondPrimaryScreen = window.screenLeft > window.screen.width || window.screenTop > window.screen.height;
+
 
     setIsExtendedMonitor(isPositionedAwayFromPrimary);
   };
