@@ -1,25 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import detectExtendedMonitor from '../ultils/detectExtendedScreen';
 
-const useIsExtendedMonitor = (): boolean => {
-    const [isExtendedMonitor, setIsExtendedMonitor] = useState(false);
+const useIsExtendedMonitor = (): any => {
+    const [isExtendedMonitor, setIsExtendedMonitor] = useState(Boolean);
+    
+    useEffect(() => {
+        // setIsExtendedMonitor(detectExtendedMonitor());
+        window.addEventListener('move', detectExtendedMonitor);
 
-  const detectExtendedMonitor = () => {
-    const isPositionedAwayFromPrimary = window.screenLeft !== 0 || window.screenTop !== 0;
-
-
-    setIsExtendedMonitor(isPositionedAwayFromPrimary);
-  };
-
-  useEffect(() => {
-    detectExtendedMonitor();
-    window.addEventListener('move', detectExtendedMonitor);
-
-    return () => {
-      window.addEventListener('move', detectExtendedMonitor);
-    };
-  }, []);
-
-  return isExtendedMonitor;
+        return () => {
+            window.removeEventListener('move', detectExtendedMonitor);
+        }
+    }, []);
+  
+    return detectExtendedMonitor();
 };
-
+  
 export default useIsExtendedMonitor;
